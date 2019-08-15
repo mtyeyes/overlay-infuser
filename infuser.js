@@ -75,6 +75,7 @@ var styleList = {
   'overlay' : {
     'display' : 'block',
     'position' : 'absolute',
+    'z-index' : '9999'
   },
   'overlayInformation' : {
     'display' : 'none',
@@ -86,7 +87,8 @@ var styleList = {
     'left' : '50%',
     'margin-left' : '-160px',
     'width' : '320px',
-    'fontSize' : '25px'
+    'fontSize' : '25px',
+    'z-index' : '9999'
   },
   'overlayHelp' : {
     'display' : 'none',
@@ -98,7 +100,8 @@ var styleList = {
     'left' : '50%',
     'margin-left' : '-275px',
     'width' : '550px',
-    'font-size' : '25px'
+    'font-size' : '25px',
+    'z-index' : '9999'
   }
 };
 
