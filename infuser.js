@@ -106,14 +106,12 @@ var styleList = {
 };
 
 function styleElements(list) {
-  var elements = Object.getOwnPropertyNames(list);
-  for (i = 0; i < elements.length; i++) {
-    var styles = Object.getOwnPropertyNames(styleList[elements[i]]);
+  for (var element in list) {
     var stylesToApply = ''
-    for (j = 0; j < styles.length; j++) {
-      stylesToApply = stylesToApply + styles[j] + ':' + styleList[elements[i]][styles[j]] + ';';
+    for (var property in list[element]) {
+      stylesToApply = stylesToApply + property + ':' + list[element][property] + ';';
     }
-    eval(elements[i]).style.cssText = stylesToApply;
+    eval(element).style.cssText = stylesToApply;
   }
 };
 
