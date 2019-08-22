@@ -1,4 +1,4 @@
-var overlayInfuser = ( function() {
+( function() {
   var overlay = document.createElement('img');
   var overlayInformation = document.createElement('div');
   var overlayHelp = document.createElement('div');
@@ -74,7 +74,6 @@ var overlayInfuser = ( function() {
   ];
   var styleList = {
     'overlay' : {
-      'display' : 'block',
       'position' : 'absolute',
       'z-index' : '9999'
     },
@@ -117,8 +116,13 @@ var overlayInfuser = ( function() {
     }
   };
 
-  function initialStyle() {
+  ( function () {
     styleElements (styleList);
+    if (localStorage.getItem('overlaydisplay')) {
+      overlay.style.display = localStorage.getItem('overlaydisplay');
+    } else {
+      overlay.style.display = 'block';
+    }
     if (localStorage.getItem('overlaynumber')) {
       overlay.src = './overlays/overlay' + (localStorage.getItem('overlaynumber'));
       overlaySrc = localStorage.getItem('overlaynumber');
@@ -147,7 +151,7 @@ var overlayInfuser = ( function() {
     document.body.insertBefore(overlay, null);
     document.body.insertBefore(overlayInformation, null);
     document.body.insertBefore(overlayHelp, null);
-  };
+  }) ();
 
   function showOverlayInformation() {
     clearTimeout(overlayInformationTimeout);
@@ -203,8 +207,10 @@ var overlayInfuser = ( function() {
   function toggleDisplay() {
     if (overlay.style.display === 'block') {
       overlay.style.display = 'none';
+      localStorage.setItem('overlaydisplay', 'none');
     } else {
       overlay.style.display = 'block';
+      localStorage.setItem('overlaydisplay', 'block');
     }
   };
 
@@ -242,9 +248,8 @@ var overlayInfuser = ( function() {
     localStorage.removeItem('vertical');
     localStorage.removeItem('horizontal');
     localStorage.removeItem('overlaynumber');
+    localStorage.removeItem('overlaydisplay');
   };
-
-  initialStyle();
 
   document.addEventListener('keydown', function(event) {
     if (blockedKeys.indexOf(event.keyCode) !== -1) {
