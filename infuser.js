@@ -244,11 +244,7 @@
   };
 
   function clearLocalStorage () {
-    localStorage.removeItem('opacity');
-    localStorage.removeItem('vertical');
-    localStorage.removeItem('horizontal');
-    localStorage.removeItem('overlaynumber');
-    localStorage.removeItem('overlaydisplay');
+    localStorage.clear();
   };
 
   document.addEventListener('keydown', function(event) {
