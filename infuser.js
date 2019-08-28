@@ -5,70 +5,85 @@
   var overlayInformationTimeout;
   var overlaySrc;
   var pressedKeys = [];
-  var blockedKeys = [ 17, 33, 34, 37, 38, 39, 40, 46, 191 ];
+  var blockedKeys = [ 17, 33, 34, 36, 37, 38, 39, 40, 46 ];
+  var keyCodeToCode = {
+    '17' : 'ControlLeft',
+    '33' : 'PageUp',
+    '34' : 'PageDown',
+    '36' : 'Home',
+    '37' : 'ArrowLeft',
+    '38' : 'ArrowUp',
+    '39' : 'ArrowRight',
+    '40' : 'ArrowDown',
+    '46' : 'Delete',
+    '188' : 'Comma',
+    '190' : 'Period',
+    '191' : 'Slash',
+    '192' : 'Backquote'
+  }
   var controls = [
-    ctrlRight = {
-      check : function() { return (pressedKeys.indexOf(39) !== -1) && (pressedKeys.indexOf(17) !== -1); },
+    {
+      check : function() { return (pressedKeys.indexOf('ArrowRight') !== -1) && (pressedKeys.indexOf('ControlLeft') !== -1); },
       result : function() { changeCoordinates ('horizontal', 10); }
     },
-    right = {
-      check : function() { return (pressedKeys.indexOf(39) !== -1); },
+    {
+      check : function() { return (pressedKeys.indexOf('ArrowRight') !== -1); },
       result : function() { changeCoordinates ('horizontal', 1); }
     },
-    ctrlLeft = {
-      check : function() { return (pressedKeys.indexOf(37) !== -1) && (pressedKeys.indexOf(17) !== -1); },
+    {
+      check : function() { return (pressedKeys.indexOf('ArrowLeft') !== -1) && (pressedKeys.indexOf('ControlLeft') !== -1); },
       result : function() { changeCoordinates ('horizontal', -10); }
     },
-    left = {
-      check : function() { return (pressedKeys.indexOf(37) !== -1); },
+    {
+      check : function() { return (pressedKeys.indexOf('ArrowLeft') !== -1); },
       result : function() { changeCoordinates ('horizontal', -1); }
     },
-    ctrlUp = {
-      check : function() { return (pressedKeys.indexOf(38) !== -1) && (pressedKeys.indexOf(17) !== -1); },
+    {
+      check : function() { return (pressedKeys.indexOf('ArrowUp') !== -1) && (pressedKeys.indexOf('ControlLeft') !== -1); },
       result : function() { changeCoordinates ('vertical', -10); }
     },
-    up = {
-      check : function() { return (pressedKeys.indexOf(38) !== -1); },
+    {
+      check : function() { return (pressedKeys.indexOf('ArrowUp') !== -1); },
       result : function() { changeCoordinates ('vertical', -1); }
     },
-    ctrlDown = {
-      check : function() { return (pressedKeys.indexOf(40) !== -1) && (pressedKeys.indexOf(17) !== -1); },
+    {
+      check : function() { return (pressedKeys.indexOf('ArrowDown') !== -1) && (pressedKeys.indexOf('ControlLeft') !== -1); },
       result : function() { changeCoordinates ('vertical', 10); }
     },
-    down = {
-      check : function() { return (pressedKeys.indexOf(40) !== -1); },
+    {
+      check : function() { return (pressedKeys.indexOf('ArrowDown') !== -1); },
       result : function() { changeCoordinates ('vertical', 1); }
     },
-    comma = {
-      check : function() { return (pressedKeys.indexOf(188) !== -1); },
+    {
+      check : function() { return (pressedKeys.indexOf('Comma') !== -1); },
       result : function() { changeOpacity (-1); }
     },
-    period = {
-      check : function() { return (pressedKeys.indexOf(190) !== -1); },
+    {
+      check : function() { return (pressedKeys.indexOf('Period') !== -1); },
       result : function() { changeOpacity (1); }
     },
-    pageUp = {
-      check : function() { return (pressedKeys.indexOf(33) !== -1); },
+    {
+      check : function() { return (pressedKeys.indexOf('PageUp') !== -1); },
       result : function() { changeOverlaySrc ('previous'); }
     },
-    pageDown = {
-      check : function() { return (pressedKeys.indexOf(34) !== -1); },
+    {
+      check : function() { return (pressedKeys.indexOf('PageDown') !== -1); },
       result : function() { changeOverlaySrc ('next'); }
     },
-    home = {
-      check : function() { return (pressedKeys.indexOf(36) !== -1); },
+    {
+      check : function() { return (pressedKeys.indexOf('Home') !== -1); },
       result : function() { resetCoordinates (); }
     },
-    backquote = {
-      check : function() { return (pressedKeys.indexOf(192) !== -1); },
+    {
+      check : function() { return (pressedKeys.indexOf('Backquote') !== -1); },
       result : function() { toggleDisplay(); }
     },
-    questionMark = {
-      check : function() { return (pressedKeys.indexOf(191) !== -1); },
+    {
+      check : function() { return (pressedKeys.indexOf('Slash') !== -1); },
       result : function() { toggleHelp(); }
     },
-    del = {
-      check : function() { return (pressedKeys.indexOf(46) !== -1); },
+    {
+      check : function() { return (pressedKeys.indexOf('Delete') !== -1); },
       result : function() { clearLocalStorage(); }
     }
   ];
@@ -229,7 +244,7 @@
   };
 
   function addKey(pressedKey) {
-    if (pressedKeys.indexOf(event.keyCode) === -1) {
+    if (pressedKeys.indexOf(pressedKey) === -1) {
       pressedKeys.push(pressedKey);
     }
   };
@@ -249,13 +264,21 @@
 
   document.addEventListener('keydown', function(event) {
     if (blockedKeys.indexOf(event.keyCode) !== -1) {
-      event.preventDefault ? event.preventDefault() : (event.returnValue = false);
+      event.preventDefault();
     };
-    addKey(event.keyCode);
+    if (event.code) {
+      addKey(event.code);
+    } else {
+      addKey(keyCodeToCode[event.keyCode]);
+    }
     checkControls();
   });
 
   document.addEventListener('keyup', function(event) {
-    removeKey(event.keyCode);
+    if (event.code) {
+      removeKey(event.code);
+    } else {
+      removeKey(keyCodeToCode[event.keyCode]);
+    }
   });
-}) ();
+})();
