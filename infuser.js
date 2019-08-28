@@ -20,7 +20,7 @@
     '190' : 'Period',
     '191' : 'Slash',
     '192' : 'Backquote'
-  }
+  };
   var controls = [
     {
       check : function() { return (pressedKeys.indexOf('ArrowRight') !== -1) && (pressedKeys.indexOf('ControlLeft') !== -1); },
